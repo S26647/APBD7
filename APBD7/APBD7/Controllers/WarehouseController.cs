@@ -1,6 +1,5 @@
 using APBD7.Ex;
 using APBD7.Models;
-using APBD7.Repos;
 using APBD7.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,26 +30,23 @@ public class WarehouseController : ControllerBase
         {
             return StatusCode(404, "No such product exists");
         }
+        catch (NoSuchOrderException)
+        {
+            return StatusCode(404, "no such order found");
+        }
         catch (NoSuchWarehouseException)
         {
             return StatusCode(404, "No such warehouse exists");
         }
         catch (AmountException)
         {
-            return StatusCode(400, "amount must be greater than zero");
-        }
-        catch (NoSuchOrderException)
-        {
-            return StatusCode(404, "no matching order found");
+            return StatusCode(400, "Wrong amount");
         }
         catch (OrderAlreadyFulfilledException)
         {
             return StatusCode(400, "order already fulfilled");
         }
         
-
         return Ok(productWarehouseId);
     }
-    
-    
 }

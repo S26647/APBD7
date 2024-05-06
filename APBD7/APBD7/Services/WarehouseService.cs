@@ -44,23 +44,16 @@ public class WarehouseService : IWarehouseService
             throw new NoSuchOrderException();
         }
         
-        
-        //if date in the request is earlier than the order date
         if (orderToFulfill.CreatedAt.CompareTo(requestDateTime) >= 0)
         {
             throw new NoSuchOrderException();
         }
 
-        /*if (await _warehouseRepo.CheckIfOrderOfProductExists(orderToFulfill.IdOrder, orderToFulfill.Amount))
-        {
-            throw new OrderAlreadyFulfilledException();
-        }*/
-        
         if (await _warehouseRepo.CheckIfProductWarehouseExists(orderToFulfill.IdOrder))
         {
             throw new OrderAlreadyFulfilledException();
         }
-        //int idWarehouse, int idProduct, int idOrder, int amount, double price
+        
         return await _warehouseRepo.FulfillOrderAsync(idWarehouse, idProduct, orderToFulfill.IdOrder, amount,price);
 
     }
